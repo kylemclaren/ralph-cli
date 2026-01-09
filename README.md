@@ -11,12 +11,15 @@ Based on the [Ralph methodology](https://ghuntley.com/ralph/) by Geoffrey Huntle
 ## Installation
 
 ```bash
+# One-liner (recommended)
+curl -fsSL https://raw.githubusercontent.com/kylemclaren/ralph/main/install.sh | sh
+
 # Using go install
-go install github.com/kylemclaren/ralph-cli/cmd/ralph@latest
+go install github.com/kylemclaren/ralph/cmd/ralph@latest
 
 # Or clone and build
-git clone https://github.com/kylemclaren/ralph-cli.git
-cd ralph-cli
+git clone https://github.com/kylemclaren/ralph.git
+cd ralph
 mise run build
 ```
 
