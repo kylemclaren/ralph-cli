@@ -55,7 +55,7 @@ changelog:
 release:
   github:
     owner: kylemclaren
-    name: ralph-cli
+    name: ralph
   draft: false
   prerelease: auto
   name_template: "v{{.Version}}"
