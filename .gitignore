@@ -1,5 +1,5 @@
 # Binaries
-ralph
+/ralph
 *.exe
 dist/
 

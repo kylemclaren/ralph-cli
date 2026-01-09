@@ -7,6 +7,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/kylemclaren/ralph/internal/agent"
+	"github.com/kylemclaren/ralph/internal/claudecode"
 	"github.com/kylemclaren/ralph/internal/config"
 	"github.com/kylemclaren/ralph/internal/hooks"
 	"github.com/kylemclaren/ralph/internal/prd"
@@ -242,6 +243,25 @@ func (l *Loop) runIteration(ctx context.Context) *IterationResult {
 		result.Error = fmt.Errorf("failed to render prompt: %w", err)
 		return result
 	}
+
+	// Set Ralph environment variables for the agent
+	// This allows Claude Code hooks (and other agents) to access Ralph state
+	ralphEnv := &claudecode.RalphEnv{
+		Active:         true,
+		Iteration:      l.Iteration,
+		MaxIterations:  l.Config.Loop.MaxIterations,
+		StoryID:        nextStory.ID,
+		StoryTitle:     nextStory.Title,
+		Branch:         l.PRD.BranchName,
+		PRDPath:        l.Config.Paths.PRD,
+		ProgressPath:   l.Config.Paths.Progress,
+		PromptPath:     l.Config.Paths.Prompt,
+		TotalStories:   total,
+		DoneStories:    completed,
+		PendingStories: pending,
+		AgentType:      l.Config.Agent.Type,
+	}
+	l.Agent.SetEnv(ralphEnv.ToEnvVars())
 
 	// Execute agent
 	agentResult, err := l.Agent.Execute(ctx, renderedPrompt)

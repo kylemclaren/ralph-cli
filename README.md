@@ -64,6 +64,7 @@ Memory persists between iterations through:
 | `ralph prompt` | View/edit/render the prompt template |
 | `ralph log` | View/edit the progress log |
 | `ralph run` | Start the Ralph loop |
+| `ralph stop` | Stop a running Ralph loop gracefully |
 | `ralph version` | Print version information |
 
 ## Configuration
@@ -188,6 +189,59 @@ Hook environment variables:
 - `RALPH_ITERATION` - Current iteration number
 - `RALPH_STORY_ID` - Current story ID
 - `RALPH_HOOK` - Hook type being executed
+
+## Claude Code Integration
+
+Ralph exposes its state via environment variables that Claude Code hooks can access. This allows Claude Code's `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, and other hooks to be aware of Ralph's context.
+
+### Environment Variables Available to Claude Code Hooks
+
+When Ralph executes Claude Code, these environment variables are set:
+
+| Variable | Description |
+|----------|-------------|
+| `RALPH_ACTIVE` | "true" when Ralph is running |
+| `RALPH_ITERATION` | Current iteration number |
+| `RALPH_MAX_ITERATIONS` | Maximum iterations configured |
+| `RALPH_STORY_ID` | Current story ID (e.g., "US-001") |
+| `RALPH_STORY_TITLE` | Current story title |
+| `RALPH_BRANCH` | Git branch from PRD |
+| `RALPH_PRD_PATH` | Path to PRD file |
+| `RALPH_PROGRESS_PATH` | Path to progress file |
+| `RALPH_PROMPT_PATH` | Path to prompt file |
+| `RALPH_TOTAL_STORIES` | Total number of stories |
+| `RALPH_DONE_STORIES` | Completed stories count |
+| `RALPH_PENDING_STORIES` | Pending stories count |
+| `RALPH_AGENT_TYPE` | Agent type (claude-code, amp, etc.) |
+
+### Example: Claude Code Hook Using Ralph State
+
+Create a hook in `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ \"$RALPH_ACTIVE\" = \"true\" ]; then echo \"Ralph iteration $RALPH_ITERATION: Working on $RALPH_STORY_ID\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Agent Compatibility
+
+The environment variables are set for all agents, not just Claude Code. This means:
+- Amp, OpenCode, Codex, and custom agents also receive these variables
+- Hook scripts can check `RALPH_AGENT_TYPE` to behave differently per agent
+- Third-party tools can integrate with Ralph by reading these variables
 
 ## Best Practices
 

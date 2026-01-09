@@ -17,6 +17,7 @@ type Agent struct {
 	Command string
 	Args    []string
 	Timeout time.Duration
+	Env     map[string]string // Additional environment variables
 }
 
 // Result holds the result of an agent execution
@@ -53,6 +54,12 @@ func (a *Agent) Execute(ctx context.Context, prompt string) (*Result, error) {
 	args := a.buildArgs(prompt)
 	cmd := exec.CommandContext(ctx, a.Command, args...)
 
+	// Set environment variables (inherit current env + add custom)
+	cmd.Env = os.Environ()
+	for k, v := range a.Env {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+	}
+
 	// Capture output while also streaming to stdout/stderr
 	var outputBuf bytes.Buffer
 	cmd.Stdout = io.MultiWriter(os.Stdout, &outputBuf)
@@ -86,6 +93,16 @@ func (a *Agent) Execute(ctx context.Context, prompt string) (*Result, error) {
 	return result, nil
 }
 
+// SetEnv sets additional environment variables for the agent
+func (a *Agent) SetEnv(env map[string]string) {
+	if a.Env == nil {
+		a.Env = make(map[string]string)
+	}
+	for k, v := range env {
+		a.Env[k] = v
+	}
+}
+
 // ExecuteWithStdin runs the agent by piping prompt via stdin
 func (a *Agent) ExecuteWithStdin(ctx context.Context, prompt string) (*Result, error) {
 	start := time.Now()
@@ -98,6 +115,12 @@ func (a *Agent) ExecuteWithStdin(ctx context.Context, prompt string) (*Result, e
 
 	// For agents that accept prompt via stdin (like amp with piped input)
 	cmd := exec.CommandContext(ctx, a.Command, a.Args...)
+
+	// Set environment variables (inherit current env + add custom)
+	cmd.Env = os.Environ()
+	for k, v := range a.Env {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+	}
 
 	var outputBuf bytes.Buffer
 	cmd.Stdout = io.MultiWriter(os.Stdout, &outputBuf)

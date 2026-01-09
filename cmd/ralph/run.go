@@ -10,6 +10,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/kylemclaren/ralph/internal/config"
 	"github.com/kylemclaren/ralph/internal/loop"
+	"github.com/kylemclaren/ralph/internal/pidfile"
 	"github.com/spf13/cobra"
 )
 
@@ -54,6 +55,13 @@ func runLoop(cmd *cobra.Command, args []string) error {
 		// Use defaults if no config
 		cfg = config.DefaultConfig()
 	}
+
+	// Write PID file
+	pf := pidfile.New("")
+	if err := pf.Write(); err != nil {
+		return fmt.Errorf("failed to write PID file: %w", err)
+	}
+	defer pf.Remove()
 
 	// Override from flags
 	if runMaxIterations > 0 {
