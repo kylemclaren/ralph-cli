@@ -1,3 +1,5 @@
+![Bw1had-aG5-wkdUP_9fP0Ak (1)](https://github.com/user-attachments/assets/9ba6f0bd-5b99-4074-873c-12288d909f87)
+
 # Ralph CLI
 
 An autonomous AI coding loop that ships features while you sleep.
