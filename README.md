@@ -11,9 +11,12 @@ Based on the [Ralph methodology](https://ghuntley.com/ralph/) by Geoffrey Huntle
 ## Installation
 
 ```bash
-# One-liner (recommended)
 curl -fsSL https://raw.githubusercontent.com/kylemclaren/ralph/main/install.sh | sh
+```
 
+### Alternative methods
+
+```bash
 # Using go install
 go install github.com/kylemclaren/ralph/cmd/ralph@latest
 
