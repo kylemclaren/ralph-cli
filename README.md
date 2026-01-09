@@ -15,7 +15,7 @@ go install github.com/kylemclaren/ralph-cli/cmd/ralph@latest
 # Or clone and build
 git clone https://github.com/kylemclaren/ralph-cli.git
 cd ralph-cli
-make build
+mise run build
 ```
 
 ## Quick Start
