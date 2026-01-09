@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/fatih/color"
 	"github.com/kylemclaren/ralph/internal/config"
@@ -191,13 +190,4 @@ notifications:
   webhook: ""
 `
 	return os.WriteFile(path, []byte(content), 0644)
-}
-
-// ensureDir creates a directory if it doesn't exist
-func ensureDir(path string) error {
-	dir := filepath.Dir(path)
-	if dir != "." && dir != "" {
-		return os.MkdirAll(dir, 0755)
-	}
-	return nil
 }

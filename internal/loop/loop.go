@@ -142,7 +142,7 @@ func (l *Loop) Run(ctx context.Context) *Result {
 			result.Error = iterResult.Error
 			result.Reason = "error"
 			result.Iterations = l.Iteration
-			l.Hooks.RunOnFailure(ctx, l.Iteration, iterResult.Error.Error())
+			_ = l.Hooks.RunOnFailure(ctx, l.Iteration, iterResult.Error.Error())
 			return result
 		}
 
@@ -153,7 +153,7 @@ func (l *Loop) Run(ctx context.Context) *Result {
 			result.StoriesComplete = l.StoriesComplete
 			result.Duration = time.Since(l.StartTime)
 
-			l.Hooks.RunOnComplete(ctx, l.Iteration, l.StoriesComplete)
+			_ = l.Hooks.RunOnComplete(ctx, l.Iteration, l.StoriesComplete)
 
 			color.Green("\n✅ All stories complete!")
 			fmt.Printf("   Iterations: %d\n", l.Iteration)
@@ -171,7 +171,7 @@ func (l *Loop) Run(ctx context.Context) *Result {
 	result.Reason = "max_iterations"
 	result.Iterations = l.Iteration - 1
 	result.Duration = time.Since(l.StartTime)
-	l.Hooks.RunOnFailure(ctx, l.Iteration, "max iterations reached")
+	_ = l.Hooks.RunOnFailure(ctx, l.Iteration, "max iterations reached")
 
 	color.Yellow("\n⚠️  Max iterations reached (%d)", l.Config.Loop.MaxIterations)
 	return result

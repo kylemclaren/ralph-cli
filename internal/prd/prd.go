@@ -86,7 +86,7 @@ func (p *PRD) GetStory(id string) *UserStory {
 // UpdateStory updates an existing story
 func (p *PRD) UpdateStory(story UserStory) error {
 	for i := range p.UserStories {
-		if strings.ToUpper(p.UserStories[i].ID) == strings.ToUpper(story.ID) {
+		if strings.EqualFold(p.UserStories[i].ID, story.ID) {
 			p.UserStories[i] = story
 			return nil
 		}

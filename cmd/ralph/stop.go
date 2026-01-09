@@ -65,7 +65,7 @@ func stopLoop(cmd *cobra.Command, args []string) error {
 		if running, _ := pf.IsRunning(); !running {
 			fmt.Println()
 			color.Green("Ralph stopped successfully")
-			pf.Remove() // Clean up PID file
+			_ = pf.Remove() // Clean up PID file
 			return nil
 		}
 		fmt.Print(".")

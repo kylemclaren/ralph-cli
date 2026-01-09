@@ -61,7 +61,7 @@ func runLoop(cmd *cobra.Command, args []string) error {
 	if err := pf.Write(); err != nil {
 		return fmt.Errorf("failed to write PID file: %w", err)
 	}
-	defer pf.Remove()
+	defer func() { _ = pf.Remove() }()
 
 	// Override from flags
 	if runMaxIterations > 0 {

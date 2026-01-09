@@ -9,10 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	cfgFile string
-	cfg     *config.Config
-)
+var cfgFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "ralph",
@@ -41,16 +38,15 @@ func init() {
 	rootCmd.PersistentFlags().String("prompt", "", "path to prompt template")
 
 	// Bind flags to viper
-	viper.BindPFlag("agent.type", rootCmd.PersistentFlags().Lookup("agent"))
-	viper.BindPFlag("loop.maxIterations", rootCmd.PersistentFlags().Lookup("max-iterations"))
-	viper.BindPFlag("paths.prd", rootCmd.PersistentFlags().Lookup("prd"))
-	viper.BindPFlag("paths.progress", rootCmd.PersistentFlags().Lookup("progress"))
-	viper.BindPFlag("paths.prompt", rootCmd.PersistentFlags().Lookup("prompt"))
+	_ = viper.BindPFlag("agent.type", rootCmd.PersistentFlags().Lookup("agent"))
+	_ = viper.BindPFlag("loop.maxIterations", rootCmd.PersistentFlags().Lookup("max-iterations"))
+	_ = viper.BindPFlag("paths.prd", rootCmd.PersistentFlags().Lookup("prd"))
+	_ = viper.BindPFlag("paths.progress", rootCmd.PersistentFlags().Lookup("progress"))
+	_ = viper.BindPFlag("paths.prompt", rootCmd.PersistentFlags().Lookup("prompt"))
 }
 
 func initConfig() {
-	var err error
-	cfg, err = config.Load(cfgFile)
+	_, err := config.Load(cfgFile)
 	if err != nil {
 		// Config file not found is OK for init command
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {

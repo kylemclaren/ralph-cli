@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -126,22 +125,4 @@ func runLog(cmd *cobra.Command, args []string) error {
 
 	fmt.Println(content)
 	return nil
-}
-
-// interactiveAppend prompts for multiline input
-func interactiveAppend() (string, error) {
-	fmt.Println("Enter your note (Ctrl+D to finish):")
-	fmt.Println(strings.Repeat("─", 40))
-
-	var lines []string
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		return "", err
-	}
-
-	return strings.Join(lines, "\n"), nil
 }
