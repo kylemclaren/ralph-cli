@@ -1,0 +1,60 @@
+# Ralph Configuration Example
+# Copy this file to ralph.yaml and customize for your project
+
+# Agent configuration
+agent:
+  # Agent type: claude-code, amp, opencode, codex, custom
+  type: claude-code
+
+  # Custom command (only if type: custom)
+  # command: "my-custom-agent --some-flag"
+
+  # Additional flags to pass to the agent
+  flags: []
+
+  # Maximum time per iteration (Go duration format)
+  timeout: 30m
+
+# Loop configuration
+loop:
+  # Maximum number of iterations before stopping
+  maxIterations: 25
+
+  # Time to sleep between iterations
+  sleepBetween: 2s
+
+  # Stop immediately on first failure (default: continue)
+  stopOnFirstFailure: false
+
+# File paths (relative to project root)
+paths:
+  prd: .ralph/prd.json
+  progress: .ralph/progress.txt
+  prompt: .ralph/prompt.md
+
+# Lifecycle hooks - shell commands to run at different stages
+hooks:
+  enabled: true
+
+  # Run before the loop starts
+  onStart: []
+  # Example: ["git checkout -b ralph/feature"]
+
+  # Run before each iteration
+  onIteration: []
+  # Example: ["git pull --rebase"]
+
+  # Run when all stories complete successfully
+  onComplete: []
+  # Example: ["./notify-slack.sh 'Ralph completed!'"]
+
+  # Run on failure or max iterations
+  onFailure: []
+  # Example: ["./notify-slack.sh 'Ralph failed!'"]
+
+# Notifications (optional)
+notifications:
+  enabled: false
+
+  # Webhook URL for Slack/Discord notifications
+  webhook: ""
