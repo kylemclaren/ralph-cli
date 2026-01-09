@@ -68,11 +68,13 @@ install_from_release() {
 
     info "Latest version: $VERSION"
 
-    # Construct download URL (adjust pattern to match your release assets)
+    # Construct download URL (matches goreleaser name_template)
+    # Version without 'v' prefix for filename
+    VERSION_NUM="${VERSION#v}"
     if [ "$OS" = "windows" ]; then
-        FILENAME="${BINARY_NAME}_${OS}_${ARCH}.zip"
+        FILENAME="${BINARY_NAME}_${VERSION_NUM}_${OS}_${ARCH}.zip"
     else
-        FILENAME="${BINARY_NAME}_${OS}_${ARCH}.tar.gz"
+        FILENAME="${BINARY_NAME}_${VERSION_NUM}_${OS}_${ARCH}.tar.gz"
     fi
 
     DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/${FILENAME}"
@@ -82,7 +84,8 @@ install_from_release() {
     TMPDIR=$(mktemp -d)
     trap 'rm -rf "$TMPDIR"' EXIT
 
-    if ! download_file "$DOWNLOAD_URL" "$TMPDIR/$FILENAME" 2>/dev/null; then
+    if ! download_file "$DOWNLOAD_URL" "$TMPDIR/$FILENAME"; then
+        warn "Failed to download release from $DOWNLOAD_URL"
         return 1
     fi
 
@@ -94,16 +97,17 @@ install_from_release() {
         tar -xzf "$FILENAME"
     fi
 
-    # Find the binary
-    if [ -f "$BINARY_NAME" ]; then
-        BINARY_PATH="$BINARY_NAME"
-    elif [ -f "${BINARY_NAME}/${BINARY_NAME}" ]; then
-        BINARY_PATH="${BINARY_NAME}/${BINARY_NAME}"
-    else
+    # Find the binary (search recursively in case of nested directories)
+    BINARY_PATH=$(find . -name "$BINARY_NAME" -type f 2>/dev/null | head -1)
+
+    if [ -z "$BINARY_PATH" ]; then
+        warn "Binary '$BINARY_NAME' not found in archive"
+        warn "Archive contents:"
+        ls -la
         return 1
     fi
 
-    install_binary "$TMPDIR/$BINARY_PATH"
+    install_binary "$TMPDIR/${BINARY_PATH#./}"
 }
 
 install_from_go() {
@@ -175,7 +179,7 @@ main() {
     echo ""
 
     # Try release download first, then fall back to go install
-    if install_from_release 2>/dev/null; then
+    if install_from_release; then
         info "Installation complete!"
     elif install_from_go; then
         info "Installation complete!"
