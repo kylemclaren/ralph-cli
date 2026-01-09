@@ -24,9 +24,9 @@ var initCmd = &cobra.Command{
 }
 
 var (
-	initBranch    string
-	initForce     bool
-	initMinimal   bool
+	initBranch  string
+	initForce   bool
+	initMinimal bool
 )
 
 func init() {

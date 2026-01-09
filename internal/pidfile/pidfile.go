@@ -12,7 +12,7 @@ import (
 const DefaultPIDFileName = ".ralph.pid"
 
 var (
-	ErrNotRunning    = errors.New("ralph is not running")
+	ErrNotRunning     = errors.New("ralph is not running")
 	ErrAlreadyRunning = errors.New("ralph is already running")
 )
 

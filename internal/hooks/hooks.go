@@ -122,18 +122,18 @@ func (r *Runner) RunOnIteration(ctx context.Context, iteration int, storyID stri
 // RunOnComplete runs onComplete hooks
 func (r *Runner) RunOnComplete(ctx context.Context, iterations int, storiesCompleted int) error {
 	return r.Run(ctx, HookOnComplete, map[string]string{
-		"RALPH_ITERATIONS":       fmt.Sprintf("%d", iterations),
+		"RALPH_ITERATIONS":        fmt.Sprintf("%d", iterations),
 		"RALPH_STORIES_COMPLETED": fmt.Sprintf("%d", storiesCompleted),
-		"RALPH_HOOK":             string(HookOnComplete),
+		"RALPH_HOOK":              string(HookOnComplete),
 	})
 }
 
 // RunOnFailure runs onFailure hooks
 func (r *Runner) RunOnFailure(ctx context.Context, iteration int, reason string) error {
 	return r.Run(ctx, HookOnFailure, map[string]string{
-		"RALPH_ITERATION":     fmt.Sprintf("%d", iteration),
+		"RALPH_ITERATION":      fmt.Sprintf("%d", iteration),
 		"RALPH_FAILURE_REASON": reason,
-		"RALPH_HOOK":          string(HookOnFailure),
+		"RALPH_HOOK":           string(HookOnFailure),
 	})
 }
 

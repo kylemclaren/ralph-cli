@@ -8,19 +8,19 @@ import (
 
 // Environment variable names that Ralph exposes to Claude Code hooks
 const (
-	EnvRalphActive       = "RALPH_ACTIVE"        // "true" when Ralph is running
-	EnvRalphIteration    = "RALPH_ITERATION"     // Current iteration number
-	EnvRalphMaxIter      = "RALPH_MAX_ITERATIONS" // Maximum iterations
-	EnvRalphStoryID      = "RALPH_STORY_ID"      // Current story ID being worked on
-	EnvRalphStoryTitle   = "RALPH_STORY_TITLE"   // Current story title
-	EnvRalphBranch       = "RALPH_BRANCH"        // Git branch from PRD
-	EnvRalphPRDPath      = "RALPH_PRD_PATH"      // Path to PRD file
-	EnvRalphProgressPath = "RALPH_PROGRESS_PATH" // Path to progress file
-	EnvRalphPromptPath   = "RALPH_PROMPT_PATH"   // Path to prompt file
-	EnvRalphTotalStories = "RALPH_TOTAL_STORIES" // Total number of stories
-	EnvRalphDoneStories  = "RALPH_DONE_STORIES"  // Number of completed stories
+	EnvRalphActive         = "RALPH_ACTIVE"          // "true" when Ralph is running
+	EnvRalphIteration      = "RALPH_ITERATION"       // Current iteration number
+	EnvRalphMaxIter        = "RALPH_MAX_ITERATIONS"  // Maximum iterations
+	EnvRalphStoryID        = "RALPH_STORY_ID"        // Current story ID being worked on
+	EnvRalphStoryTitle     = "RALPH_STORY_TITLE"     // Current story title
+	EnvRalphBranch         = "RALPH_BRANCH"          // Git branch from PRD
+	EnvRalphPRDPath        = "RALPH_PRD_PATH"        // Path to PRD file
+	EnvRalphProgressPath   = "RALPH_PROGRESS_PATH"   // Path to progress file
+	EnvRalphPromptPath     = "RALPH_PROMPT_PATH"     // Path to prompt file
+	EnvRalphTotalStories   = "RALPH_TOTAL_STORIES"   // Total number of stories
+	EnvRalphDoneStories    = "RALPH_DONE_STORIES"    // Number of completed stories
 	EnvRalphPendingStories = "RALPH_PENDING_STORIES" // Number of pending stories
-	EnvRalphAgentType    = "RALPH_AGENT_TYPE"    // Agent type (claude-code, amp, etc.)
+	EnvRalphAgentType      = "RALPH_AGENT_TYPE"      // Agent type (claude-code, amp, etc.)
 )
 
 // RalphEnv holds Ralph state to expose via environment variables
